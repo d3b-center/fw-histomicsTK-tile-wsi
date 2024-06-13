@@ -1,0 +1,47 @@
+{
+  "name": "histomicstk-tile-wsi",
+  "label": "Generate WSI tile patches",
+  "description": "This tool can be used to generate tile patches for a whole slide histo-pathology image.",
+  "author": "D3b-TIRU",
+  "maintainer": "D3b-TIRU <flywheel@d3b.center>",
+  "url": "https://github.com/DigitalSlideArchive/HistomicsTK",
+  "source": "https://github.com/d3b-center/fw-histomicsTK-tile-wsi/tree/main",
+  "version": "0.0.0-1",
+  "license": "Apache-2.0",
+  "custom": {
+    "flywheel": {
+      "suite": "HistomicsTK"
+    },
+    "gear-builder": {
+      "category": "utility",
+      "image": "chop.flywheel.io/histomicstk-tile-wsi:0.0.0-1"
+    }
+  },
+  "inputs": {
+    "input_image": {
+      "base": "file",
+      "description": "Whole slide image."
+    },
+    "api-key": {
+      "base": "api-key",
+      "read-only": true
+    }
+  },
+  "config": {
+    "debug": {
+      "default": false,
+      "description": "Log debug messages",
+      "type": "boolean"
+    }
+  },
+  "environment": {
+    "PATH": "/opt/poetry/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "PYTHON_VERSION": "3.9.7",
+    "PIP_NO_CACHE_DIR": "0",
+    "POETRY_HOME": "/opt/poetry",
+    "POETRY_VERSION": "1.1.11",
+    "POETRY_VIRTUALENVS_CREATE": "false",
+    "FLYWHEEL": "/flywheel/v0"
+  },
+  "command": "python run.py"
+}
