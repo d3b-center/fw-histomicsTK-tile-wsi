@@ -57,10 +57,14 @@ def generate_wsi_tiles(inputImageFile, output_dir):
                     )
         this_tile_image = tile_im['tile']
 
-        # save tile
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-        skimage.io.imsave(f"{output_dir}/{tile_num}.png", this_tile_image)
+        # check if image is low-contrast
+        is_low_contrast_flag = skimage.exposure.is_low_contrast(this_tile_image)
+
+        # save tile (if not low-contrast/background)
+        if not is_low_contrast_flag:
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)
+            skimage.io.imsave(f"{output_dir}/{tile_num}.png", this_tile_image)
 
 
 

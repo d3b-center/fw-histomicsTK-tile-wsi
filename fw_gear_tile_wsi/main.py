@@ -50,6 +50,7 @@ def run(client: CoreClient, gtk_context: GearToolkitContext):
     # run the main processes & upload output file back to acquisition
     print(f'Generating tiles for file: {input_file_name}')
     output_dir = input_file_name.replace('.svs','_tiles') # assumes this is an SVS file type
+    output_dir = output_dir.replace(' ','_')
     generate_wsi_tiles(input_file_name, output_dir)
 
     print(f'Zipping the output folder: {output_dir}')
