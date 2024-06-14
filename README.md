@@ -9,6 +9,3 @@ This gear will generate tiles for a single WSI using HistomicsTK tools. Low-cont
 
 ## Required inputs:
 - Input WSI
-
-## Version history
-0.0.1: first release
