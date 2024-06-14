@@ -28,10 +28,11 @@ def check_if_background_tile(imInput):
     g_mask = imInput[:,:,1]>background_threshold
     b_mask = imInput[:,:,2]>background_threshold
     mask = r_mask * g_mask * b_mask
-    imInput[:,:,0] = imInput[:,:,0] * mask
-    imInput[:,:,1] = imInput[:,:,1] * mask
-    imInput[:,:,2] = imInput[:,:,2] * mask
-    n_nonzero_pixels = len(np.nonzero(imInput)[0])
+    # imInput[:,:,0] = imInput[:,:,0] * mask
+    # imInput[:,:,1] = imInput[:,:,1] * mask
+    # imInput[:,:,2] = imInput[:,:,2] * mask
+    # n_nonzero_pixels = len(np.nonzero(imInput)[0])
+    n_nonzero_pixels = len(np.nonzero(mask)[0])
     n_pixels = mask.shape[0] * mask.shape[1]
     percent_nonzero = n_nonzero_pixels/n_pixels
     if percent_nonzero > 1.5:
