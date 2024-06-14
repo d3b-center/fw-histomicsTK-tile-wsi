@@ -22,6 +22,23 @@ titlesize = 24
 # load image
 # inputImageFile = 'C1155462_7316-4187_H_and_E.svs'
 
+def check_if_background_tile(imInput):
+    background_threshold = 200
+    r_mask = imInput[:,:,0]>background_threshold
+    g_mask = imInput[:,:,1]>background_threshold
+    b_mask = imInput[:,:,2]>background_threshold
+    mask = r_mask * g_mask * b_mask
+    imInput[:,:,0] = imInput[:,:,0] * mask
+    imInput[:,:,1] = imInput[:,:,1] * mask
+    imInput[:,:,2] = imInput[:,:,2] * mask
+    n_nonzero_pixels = len(np.nonzero(imInput)[0])
+    n_pixels = mask.shape[0] * mask.shape[1]
+    percent_nonzero = n_nonzero_pixels/n_pixels
+    if percent_nonzero > 1.5:
+        return 1
+    else:
+        return 0 
+
 def generate_wsi_tiles(inputImageFile, output_dir):
 
     # imInput = skimage.io.imread(inputImageFile)[:, :, :3]
@@ -60,11 +77,14 @@ def generate_wsi_tiles(inputImageFile, output_dir):
         # check if image is low-contrast
         is_low_contrast_flag = skimage.exposure.is_low_contrast(this_tile_image, fraction_threshold=0.30)
 
-        # save tile (if not low-contrast/background)
+        # save tile (if not low-contrast or mostly background)
         if not is_low_contrast_flag:
-            if not os.path.exists(output_dir):
-                os.makedirs(output_dir)
-            skimage.io.imsave(f"{output_dir}/{tile_num}.png", this_tile_image)
+            # check if mostly background (if not, then save)
+            is_background_flag = check_if_background_tile(this_tile_image)
+            if not is_background_flag:
+                if not os.path.exists(output_dir):
+                    os.makedirs(output_dir)
+                skimage.io.imsave(f"{output_dir}/{tile_num}.png", this_tile_image)
 
 
 
