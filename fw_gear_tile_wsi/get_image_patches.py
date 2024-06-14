@@ -58,7 +58,7 @@ def generate_wsi_tiles(inputImageFile, output_dir):
         this_tile_image = tile_im['tile']
 
         # check if image is low-contrast
-        is_low_contrast_flag = skimage.exposure.is_low_contrast(this_tile_image)
+        is_low_contrast_flag = skimage.exposure.is_low_contrast(this_tile_image, fraction_threshold=0.30)
 
         # save tile (if not low-contrast/background)
         if not is_low_contrast_flag:
