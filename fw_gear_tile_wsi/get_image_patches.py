@@ -40,7 +40,7 @@ def check_if_background_tile(imInput):
     else:
         return 0 
 
-def generate_wsi_tiles(inputImageFile, output_dir):
+def generate_wsi_tiles(inputImageFile, output_dir, threshold_flag, low_contrast_flag):
 
     # imInput = skimage.io.imread(inputImageFile)[:, :, :3]
 
@@ -76,12 +76,18 @@ def generate_wsi_tiles(inputImageFile, output_dir):
         this_tile_image = tile_im['tile']
 
         # check if image is low-contrast
-        is_low_contrast_flag = skimage.exposure.is_low_contrast(this_tile_image, fraction_threshold=0.30)
+        if low_contrast_flag:
+            is_low_contrast_flag = skimage.exposure.is_low_contrast(this_tile_image, fraction_threshold=0.30)
+        else:
+            is_low_contrast_flag = 0
 
         # save tile (if not low-contrast or mostly background)
         if not is_low_contrast_flag:
             # check if mostly background (if not, then save)
-            is_background_flag = check_if_background_tile(this_tile_image)
+            if threshold_flag:
+                is_background_flag = check_if_background_tile(this_tile_image)
+            else:
+                is_background_flag = 0
             if not is_background_flag:
                 if not os.path.exists(output_dir):
                     os.makedirs(output_dir)

@@ -46,12 +46,14 @@ def run(client: CoreClient, gtk_context: GearToolkitContext):
         config = json.load(config_file)
 
     input_file_name = config['inputs']['input_image']['location']['path']
+    threshold_flag = config['config']['threshold_tiles']
+    low_contrast_flag = config['config']['exclude_low_contrast_tiles']
 
     # run the main processes & upload output file back to acquisition
     print(f'Generating tiles for file: {input_file_name}')
     output_dir = input_file_name.replace('.svs','_tiles') # assumes this is an SVS file type
     output_dir = output_dir.replace(' ','_')
-    generate_wsi_tiles(input_file_name, output_dir)
+    generate_wsi_tiles(input_file_name, output_dir, threshold_flag, low_contrast_flag)
 
     print(f'Zipping the output folder: {output_dir}')
     with ZipFile(f'{output_dir}.zip', 'w') as zip_object:
